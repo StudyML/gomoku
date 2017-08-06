@@ -2,6 +2,17 @@ $(document).ready(function(){
   var initLogic = require('./gomoku/logic');
   var logic = initLogic();
 
+  var database = firebase.database();
+  var state = [];
+  var temp = {};
+
+  function initState() {
+    for(var i=0; i<225; i++){
+      state.push(0);
+    }
+    state[112] = 1;
+  }
+
   $("#7-7").addClass("boardCellCross");
   var currValue = -1; // player - O, computer - X
   var gameOver = false;
@@ -12,7 +23,19 @@ $(document).ready(function(){
     var cell = $(this);
     if (cell.children().hasClass("boardCellCircle")) return "";
     if (cell.children().hasClass("boardCellCross")) return "";
-    var indexes = (cell.children().attr('id')).split("-");
+    var indexes = (cell.children().attr('id')).split('-');
+    var id = Number(indexes[0])*15+Number(indexes[1]);
+
+    //use firebase database
+    temp.state = state;
+    temp.action = id;
+    var newPostKey = firebase.database().ref().child('gomoku_data').push().key;
+    var updates = {};
+    updates['/gomoku_data/' + newPostKey] = temp;
+    firebase.database().ref().update(updates);
+    state[id] = 1;
+    temp = {};
+
     var answer = logic.makeAnswer(indexes[0],indexes[1]);
     if(answer !== ""){
       var getedId = '#' +answer[0] + '-' + answer[1];
@@ -62,6 +85,7 @@ $(document).ready(function(){
   $("#new-O").parent().click(handleNewGame);
   $("#new-X").parent().click(handleNewGame);
   function handleNewGame(e){
+    initState();
     var index = ($(this).children().attr('id')).split("-")[1];
     $(".boardCell").removeClass("boardCellCross boardCellCircle");
     gameOver = false;
@@ -77,4 +101,5 @@ $(document).ready(function(){
     }
     $("#check").prop('checked', false);
   }
+
 });

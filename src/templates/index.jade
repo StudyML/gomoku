@@ -34,4 +34,16 @@ html
                      .boardCol
                         .boardCell(id=x + "-" + y)
       script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js")
+      script(src='https://www.gstatic.com/firebasejs/4.2.0/firebase.js')
+      script.
+        // Initialize Firebase
+        var config = {
+        apiKey: "AIzaSyCYOlqxAZk19t23LXHIff5F_E79_dtnYuY",
+        authDomain: "gomoku-401d0.firebaseapp.com",
+        databaseURL: "https://gomoku-401d0.firebaseio.com",
+        projectId: "gomoku-401d0",
+        storageBucket: "gomoku-401d0.appspot.com",
+        messagingSenderId: "786240642237"
+        };
+        firebase.initializeApp(config);
       script(src="js/bundle.js")

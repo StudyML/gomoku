@@ -13,7 +13,7 @@ var streamify  = require('gulp-streamify');
 
 var production = true; // true; false;
 var outDir = 'builds/development';
-var prodDir = 'builds/production';
+var prodDir = 'builds/public';
 
 gulp.task('jade', function(){
   return gulp.src('src/templates/**/*.jade')
